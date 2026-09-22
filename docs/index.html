@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Movie Analytics — Report</title>
+<meta name="description" content="Ratings and box-office financial findings from MovieLens and TMDB movie data.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="brand" href="index.html">
+    <span class="mark">MOVIE ANALYTICS</span>
+    <span class="sub">ratings &amp; box office</span>
+  </a>
+  <div class="links">
+    <a href="index.html" class="active">Report</a>
+    <a href="dashboard.html">Dashboard</a>
+  </div>
+</nav>
+
+<main class="page">
+
+  <section class="hero">
+    <h1>What movie ratings and box office data tell us</h1>
+    <div class="byline">By [Your Name] &middot; Financial Data Analytics &middot; MovieLens + TMDB data</div>
+    <p class="summary">
+      This report analyzes 100,836 ratings that 610 MovieLens users gave to 9,742
+      movies between 1996 and 2018, joined with box-office budget and revenue
+      figures from The Movie Database (TMDB) for the subset of those films with
+      financial data available. It looks at which genres get watched and rated
+      the most, which ones are actually worth the money, and how Hollywood
+      spending and audience taste have shifted across decades.
+    </p>
+  </section>
+
+  <section class="stat-row" id="stat-row">
+    <!-- filled by report.js from docs/data/report_data.json -->
+  </section>
+
+  <!-- ===================== FINDING 1 ===================== -->
+  <section class="finding" id="finding-1">
+    <div class="kicker">Finding 01 &middot; Engagement</div>
+    <h2>A handful of genres draw far more ratings than the rest</h2>
+    <p>
+      Grouping every movie by its primary genre and counting the ratings each
+      group collected shows a steep drop-off after the top few categories.
+      <strong><span id="stat-top-genre">—</span></strong> alone accounts for a
+      meaningful share of all ratings in the dataset — more evidence that a
+      handful of mainstream genres carry most of the viewing activity, while
+      niche genres like Documentary or War see a fraction of the engagement.
+    </p>
+    <div class="chart-card">
+      <div class="chart-title">Ratings received, by primary genre (top 10)</div>
+      <canvas id="chart-genre-volume"></canvas>
+    </div>
+  </section>
+
+  <!-- ===================== FINDING 2 ===================== -->
+  <section class="finding" id="finding-2">
+    <div class="kicker">Finding 02 &middot; Quality</div>
+    <h2>The most-watched genres aren't the highest-rated ones</h2>
+    <p>
+      Ranking genres by their average rating instead of rating volume flips
+      the leaderboard: smaller, less-frequently-rated genres tend to score
+      higher, while some of the most popular genres land closer to the middle
+      of the pack. This is a common pattern in ratings data — a genre with
+      fewer, more deliberate viewers often rates higher than one with a huge,
+      casual audience.
+    </p>
+    <div class="chart-card">
+      <div class="chart-title">Average rating, by primary genre (min. 200 ratings)</div>
+      <canvas id="chart-genre-avg-rating"></canvas>
+    </div>
+  </section>
+
+  <!-- ===================== FINDING 3 ===================== -->
+  <section class="finding" id="finding-3">
+    <div class="kicker">Finding 03 &middot; Activity over time</div>
+    <h2>Rating activity is uneven year to year, not steadily growing</h2>
+    <p>
+      The number of ratings logged per year swings considerably across the
+      dataset's 1996–2018 span, with visible spikes rather than a smooth
+      upward trend. These swings line up with MovieLens's own data-collection
+      history more than with any real change in movie-watching habits, which
+      is an important caveat for anyone using this data to talk about
+      audience trends.
+    </p>
+    <div class="chart-card">
+      <div class="chart-title">Ratings logged per year</div>
+      <canvas id="chart-ratings-by-year"></canvas>
+    </div>
+  </section>
+
+  <!-- ===================== FINDING 4 ===================== -->
+  <section class="finding" id="finding-4">
+    <div class="kicker">Finding 04 &middot; Rating trends</div>
+    <h2>Average ratings have drifted over the years</h2>
+    <p>
+      Looking at the mean rating given per year (rather than the count)
+      shows a gentler but still noticeable drift. A small change like this,
+      spread across tens of thousands of ratings, is easy to miss in a
+      single summary statistic but shows up clearly once it's plotted year
+      by year.
+    </p>
+    <div class="chart-card">
+      <div class="chart-title">Average rating given per year</div>
+      <canvas id="chart-avgrating-by-year"></canvas>
+    </div>
+  </section>
+
+  <!-- ===================== FINDING 5 ===================== -->
+  <section class="finding" id="finding-5">
+    <div class="kicker">Finding 05 &middot; Box office</div>
+    <h2>A small set of genres account for most tracked box-office revenue</h2>
+    <p>
+      Restricting to the <span id="stat-fin-count">—</span> movies with
+      usable TMDB budget and revenue figures and summing revenue by primary
+      genre shows box-office money concentrated even more sharply than
+      rating volume was. <strong><span id="stat-top-revenue-genre">—</span></strong>
+      leads the pack, reflecting how blockbuster-scale spending clusters
+      into a few genres.
+    </p>
+    <div class="chart-card">
+      <div class="chart-title">Total box-office revenue tracked, by primary genre</div>
+      <canvas id="chart-genre-revenue"></canvas>
+    </div>
+  </section>
+
+  <!-- ===================== FINDING 6 ===================== -->
+  <section class="finding" id="finding-6">
+    <div class="kicker">Finding 06 &middot; Return on investment</div>
+    <h2>The highest-grossing genres aren't the best investments</h2>
+    <p>
+      Revenue alone rewards big-budget genres by default. Dividing profit by
+      budget for each movie (limited to films with at least $10,000 in
+      reported budget, to avoid inflated ratios from placeholder data) and
+      taking the <strong>median</strong> within each genre tells a different
+      story — some genres deliver strong typical returns on comparatively
+      modest budgets. The median, not the average, is used here because a
+      handful of ultra-low-budget breakout hits (a horror film made for
+      $60,000 that grossed $248M, for instance) can pull a genre's mean ROI
+      up to a number no typical movie in that genre comes close to. Genres
+      with fewer than 20 financed titles are left off the chart below, since
+      a median of a handful of movies is too noisy to compare fairly.
+    </p>
+    <div class="chart-card">
+      <div class="chart-title">Median return on investment, by primary genre (min. 20 financed titles)</div>
+      <canvas id="chart-genre-roi"></canvas>
+    </div>
+  </section>
+
+  <!-- ===================== FINDING 7 ===================== -->
+  <section class="finding" id="finding-7">
+    <div class="kicker">Finding 07 &middot; Decades</div>
+    <h2>Tracked box-office revenue has grown decade over decade</h2>
+    <p>
+      Summing revenue by the decade a movie was released (again limited to
+      movies with usable TMDB financials) shows the scale of the modern
+      box office next to earlier decades in this sample — part real
+      industry growth, part a reflection of which older films happen to
+      have complete TMDB financial records.
+    </p>
+    <div class="chart-card">
+      <div class="chart-title">Total box-office revenue tracked, by release decade</div>
+      <canvas id="chart-decade-revenue"></canvas>
+    </div>
+  </section>
+
+  <!-- ===================== FINDING 8 ===================== -->
+  <section class="finding" id="finding-8">
+    <div class="kicker">Finding 08 &middot; Standouts</div>
+    <h2>The ten highest-grossing movies in the dataset</h2>
+    <p>
+      Ranking individual movies by revenue rather than genre surfaces the
+      familiar blockbusters driving the totals above — a useful sanity
+      check that the aggregate numbers are being pulled up by real,
+      recognizable titles rather than a data artifact.
+    </p>
+    <div class="chart-card">
+      <div class="chart-title">Top 10 movies by box-office revenue</div>
+      <canvas id="chart-top-revenue"></canvas>
+    </div>
+  </section>
+
+  <!-- ===================== CLOSING ===================== -->
+  <section class="closing">
+    <h2>About this data</h2>
+
+    <section>
+      <h3>Sources</h3>
+      <p>
+        Ratings and movie titles/genres come from <strong>MovieLens
+        <code>ml-latest-small</code></strong>, a public research dataset from
+        GroupLens Research at the University of Minnesota: 100,836 ratings
+        across 9,742 movies from 610 users, collected between March 1996 and
+        September 2018. Budget, revenue, runtime, popularity, and vote
+        statistics come from <strong>The Movie Database (TMDB)</strong>'s
+        public API, matched to each MovieLens movie via the <code>tmdbId</code>
+        identifier in MovieLens's own <code>links.csv</code> crosswalk file.
+        This product uses the TMDB API but is not endorsed or certified by TMDB.
+      </p>
+    </section>
+
+    <section>
+      <h3>What one row is</h3>
+      <p>
+        The underlying panel has one row per <strong>rating event</strong>: a
+        single user rating a single movie at a specific time (userId,
+        movieId, rating, and the year the rating was submitted). Each movie
+        also carries static attributes joined onto every one of its ratings —
+        genre, release year, decade, and (where available) budget, revenue,
+        runtime, popularity, and vote statistics from TMDB.
+      </p>
+    </section>
+
+    <section>
+      <h3>Rows dropped or set aside</h3>
+      <p>
+        No rating rows were dropped. On the financial side:
+        <span id="stat-no-financials">—</span> of 9,742 movies have no
+        matching TMDB record or report $0 for both
+        budget and revenue, which TMDB generally uses to mean "unknown," not
+        "free" — these are excluded from every revenue, budget, profit, and
+        ROI calculation (they remain in rating-based findings). Return on
+        investment is left blank for any movie with a reported budget under
+        $10,000, since a tiny or placeholder budget produces absurd ratios
+        that would distort genre averages.
+      </p>
+    </section>
+
+    <section>
+      <h3>How every rate, ratio, and average is computed</h3>
+      <p>
+        <strong>Average rating</strong> is the mean of the 0.5–5.0 rating
+        column for the relevant group. <strong>Primary genre</strong> is the
+        first genre MovieLens lists for a movie; genre-level statistics group
+        by this single primary genre, so genre buckets are mutually exclusive
+        and don't double-count multi-genre movies. <strong>Profit</strong> is
+        revenue minus budget. <strong>ROI</strong> is
+        <code>(revenue − budget) / budget</code>, computed per movie; genre
+        and headline ROI figures report the <strong>median</strong> ROI
+        within each group rather than the mean, since ROI is a ratio that a
+        handful of extreme low-budget hits can distort badly (see Finding
+        06). <strong>Decade</strong> is the movie's release year rounded
+        down to the nearest 10. All financial figures are TMDB's reported
+        (nominal) values, not adjusted for inflation.
+      </p>
+    </section>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  MovieLens data from GroupLens Research &middot; Movie data from
+  <a href="https://www.themoviedb.org/">TMDB</a>, not endorsed or certified
+  by TMDB &middot; <a href="dashboard.html">Explore the data yourself →</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="js/report.js"></script>
+</body>
+</html>

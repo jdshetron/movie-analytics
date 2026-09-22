@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Movie Analytics — Dashboard</title>
+<meta name="description" content="Interactive dashboard over MovieLens ratings and TMDB box-office financials.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="brand" href="index.html">
+    <span class="mark">MOVIE ANALYTICS</span>
+    <span class="sub">ratings &amp; box office</span>
+  </a>
+  <div class="links">
+    <a href="index.html">Report</a>
+    <a href="dashboard.html" class="active">Dashboard</a>
+  </div>
+</nav>
+
+<main class="page wide">
+
+  <section class="dash-intro">
+    <h1>Explore the data</h1>
+    <p>
+      Filter 100,836 MovieLens ratings by year, movie, genre, decade, and
+      language, then switch the measure and breakdown to see rating
+      engagement and TMDB box-office financials recombine in real time.
+      Everything below — the summary numbers, the charts, and the table —
+      reacts to the same filtered slice.
+    </p>
+  </section>
+
+  <div class="controls">
+    <div class="filter-row">
+      <div class="field">
+        <label for="f-year">Rating year</label>
+        <select id="f-year"><option value="">All years</option></select>
+      </div>
+      <div class="field">
+        <label for="f-movie">Movie</label>
+        <input id="f-movie" list="movie-options" placeholder="All movies" autocomplete="off">
+        <datalist id="movie-options"></datalist>
+      </div>
+      <div class="field">
+        <label for="f-genre">Genre</label>
+        <select id="f-genre"><option value="">All genres</option></select>
+      </div>
+      <div class="field">
+        <label for="f-decade">Release decade</label>
+        <select id="f-decade"><option value="">All decades</option></select>
+      </div>
+      <div class="field">
+        <label for="f-language">Original language</label>
+        <select id="f-language"><option value="">All languages</option></select>
+      </div>
+      <button class="reset-btn" id="reset-btn" type="button">Reset filters</button>
+      <div class="result-count" id="result-count"></div>
+    </div>
+    <div class="switch-row">
+      <div class="field">
+        <label for="measure-select">Measure</label>
+        <select id="measure-select">
+          <option value="count">Number of ratings</option>
+          <option value="avg_rating">Average rating</option>
+          <option value="total_revenue">Total box-office revenue</option>
+          <option value="avg_budget">Average budget</option>
+          <option value="median_roi">Median ROI</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="breakdown-select">Broken down by</label>
+        <select id="breakdown-select">
+          <option value="primary_genre">Genre</option>
+          <option value="decade">Release decade</option>
+          <option value="original_language">Original language</option>
+          <option value="rating_year">Rating year</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div id="dashboard-body">
+    <p class="loading-note" id="loading-note">Loading ratings and movie data…</p>
+
+    <section class="dash-stat-row" id="dash-stat-row" style="display:none"></section>
+
+    <section class="chart-grid" id="chart-grid" style="display:none">
+      <div class="chart-card">
+        <div class="chart-title" id="title-bucket-bar">Number of ratings, by genre</div>
+        <canvas id="chart-bucket-bar"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title" id="title-trend">Number of ratings, by rating year</div>
+        <canvas id="chart-trend"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title" id="title-composition">Share of ratings, by genre</div>
+        <canvas id="chart-composition"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title" id="title-top-movies">Top 10 movies, by number of ratings</div>
+        <canvas id="chart-top-movies"></canvas>
+      </div>
+    </section>
+
+    <section class="table-card" id="table-card" style="display:none">
+      <div class="chart-title" id="title-table">Numbers behind the current view</div>
+      <div class="table-scroll">
+        <table class="data-table" id="data-table">
+          <thead><tr></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  MovieLens data from GroupLens Research &middot; Movie data from
+  <a href="https://www.themoviedb.org/">TMDB</a>, not endorsed or certified
+  by TMDB &middot; <a href="index.html">← Back to the report</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>
