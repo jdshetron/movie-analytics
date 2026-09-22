@@ -87,6 +87,13 @@ def main() -> None:
     movies = load_movies()
     ratings = load_ratings()
 
+    # Keep only movies that were actually rated at least once, so the report's
+    # movie-level totals and the dashboard's ratings-derived totals always
+    # agree — a movie nobody rated isn't really "in" a ratings panel.
+    rated_movie_ids = set(ratings["movieId"].unique())
+    dropped_unrated = len(movies) - movies["movieId"].isin(rated_movie_ids).sum()
+    movies = movies[movies["movieId"].isin(rated_movie_ids)].reset_index(drop=True)
+
     panel = ratings.merge(movies, on="movieId", how="left")
     panel.to_csv(PROCESSED / "panel.csv", index=False)
 
@@ -186,7 +193,7 @@ def main() -> None:
         json.dump(clean_nans(summary), f, indent=2, default=str)
 
     print(f"panel.csv: {len(panel):,} rows")
-    print(f"movies.json: {len(movies_out):,} movies")
+    print(f"movies.json: {len(movies_out):,} movies ({dropped_unrated} unrated movies dropped)")
     print(f"ratings.csv: {len(ratings_out):,} ratings")
     print(f"movies with financials: {int(movies['has_financials'].sum()):,} / {len(movies):,}")
 

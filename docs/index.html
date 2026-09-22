@@ -24,9 +24,9 @@
 
   <section class="hero">
     <h1>What movie ratings and box office data tell us</h1>
-    <div class="byline">By [Your Name] &middot; Financial Data Analytics &middot; MovieLens + TMDB data</div>
+    <div class="byline">By John Shetron &middot; Financial Data Analytics &middot; MovieLens + TMDB data</div>
     <p class="summary">
-      This report analyzes 100,836 ratings that 610 MovieLens users gave to 9,742
+      This report analyzes 100,836 ratings that 610 MovieLens users gave to 9,724
       movies between 1996 and 2018, joined with box-office budget and revenue
       figures from The Movie Database (TMDB) for the subset of those films with
       financial data available. It looks at which genres get watched and rated
@@ -194,8 +194,10 @@
         Ratings and movie titles/genres come from <strong>MovieLens
         <code>ml-latest-small</code></strong>, a public research dataset from
         GroupLens Research at the University of Minnesota: 100,836 ratings
-        across 9,742 movies from 610 users, collected between March 1996 and
-        September 2018. Budget, revenue, runtime, popularity, and vote
+        from 610 users, collected between March 1996 and September 2018. The
+        release's catalog lists 9,742 movies, 18 of which received no
+        ratings at all and are dropped, leaving 9,724 movies in this report.
+        Budget, revenue, runtime, popularity, and vote
         statistics come from <strong>The Movie Database (TMDB)</strong>'s
         public API, matched to each MovieLens movie via the <code>tmdbId</code>
         identifier in MovieLens's own <code>links.csv</code> crosswalk file.
@@ -218,9 +220,11 @@
     <section>
       <h3>Rows dropped or set aside</h3>
       <p>
-        No rating rows were dropped. On the financial side:
-        <span id="stat-no-financials">—</span> of 9,742 movies have no
-        matching TMDB record or report $0 for both
+        No rating rows were dropped. 18 movies in the MovieLens catalog
+        received no ratings at all and are dropped entirely, since this
+        report is built around the ratings panel. On the financial side:
+        <span id="stat-no-financials">—</span> of the remaining 9,724 movies
+        have no matching TMDB record or report $0 for both
         budget and revenue, which TMDB generally uses to mean "unknown," not
         "free" — these are excluded from every revenue, budget, profit, and
         ROI calculation (they remain in rating-based findings). Return on

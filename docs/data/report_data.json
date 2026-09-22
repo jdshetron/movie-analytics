@@ -1,13 +1,13 @@
 {
   "headline": {
     "total_ratings": 100836,
-    "total_movies": 9742,
+    "total_movies": 9724,
     "total_users": 610,
-    "movies_with_financials": 5031,
+    "movies_with_financials": 5888,
     "avg_rating_overall": 3.502,
-    "total_revenue_tracked": 383224815567,
-    "total_budget_tracked": 136780684098,
-    "median_roi": 0.871,
+    "total_revenue_tracked": 538332218961,
+    "total_budget_tracked": 180006985594,
+    "median_roi": 0.919,
     "year_range": [
       1996,
       2018
@@ -118,122 +118,130 @@
     {
       "primary_genre": "Action",
       "movie_count": 1828,
-      "total_revenue": 146562736889.0,
-      "avg_budget": 44356970.76720476,
-      "median_roi": 1.057708282051282,
-      "roi_sample_size": 1173
+      "total_revenue": 226372672923.0,
+      "avg_budget": 51706216.756887056,
+      "median_roi": 1.096,
+      "roi_sample_size": 1447
     },
     {
       "primary_genre": "Comedy",
-      "movie_count": 2779,
-      "total_revenue": 78571069236.0,
-      "avg_budget": 18821645.770957097,
-      "median_roi": 0.752722272897898,
-      "roi_sample_size": 1512
-    },
-    {
-      "primary_genre": "Drama",
-      "movie_count": 2226,
-      "total_revenue": 56142736237.0,
-      "avg_budget": 17334445.780921586,
-      "median_roi": 0.640647,
-      "roi_sample_size": 1233
+      "movie_count": 2776,
+      "total_revenue": 93088758165.0,
+      "avg_budget": 19019122.80022831,
+      "median_roi": 0.7867293333333333,
+      "roi_sample_size": 1749
     },
     {
       "primary_genre": "Adventure",
-      "movie_count": 653,
-      "total_revenue": 51534145035.0,
-      "avg_budget": 39818967.13131313,
-      "median_roi": 0.9730383386243386,
-      "roi_sample_size": 396
+      "movie_count": 652,
+      "total_revenue": 79094488513.0,
+      "avg_budget": 48669053.07322176,
+      "median_roi": 1.095429264359352,
+      "roi_sample_size": 478
     },
     {
-      "primary_genre": "Crime",
-      "movie_count": 537,
-      "total_revenue": 16225784904.0,
-      "avg_budget": 19269999.06303725,
-      "median_roi": 0.6305669333333334,
-      "roi_sample_size": 346
+      "primary_genre": "Drama",
+      "movie_count": 2218,
+      "total_revenue": 68656220137.0,
+      "avg_budget": 17806852.421499293,
+      "median_roi": 0.69000325,
+      "roi_sample_size": 1410
     },
     {
       "primary_genre": "Animation",
-      "movie_count": 298,
-      "total_revenue": 13330672603.0,
-      "avg_budget": 37608342.125,
-      "median_roi": 1.4833333333333334,
-      "roi_sample_size": 103
+      "movie_count": 297,
+      "total_revenue": 20605210984.0,
+      "avg_budget": 40804685.78518519,
+      "median_roi": 1.7162260155610154,
+      "roi_sample_size": 134
+    },
+    {
+      "primary_genre": "Crime",
+      "movie_count": 534,
+      "total_revenue": 19060998441.0,
+      "avg_budget": 19827283.078880407,
+      "median_roi": 0.7680104166666667,
+      "roi_sample_size": 389
     },
     {
       "primary_genre": "Horror",
       "movie_count": 468,
-      "total_revenue": 10397764395.0,
-      "avg_budget": 11940450.029900333,
-      "median_roi": 1.2738551587301588,
-      "roi_sample_size": 301
+      "total_revenue": 14056190332.0,
+      "avg_budget": 11622358.031791907,
+      "median_roi": 1.3575757575757577,
+      "roi_sample_size": 345
     },
     {
       "primary_genre": "Children",
       "movie_count": 197,
-      "total_revenue": 10123852403.0,
-      "avg_budget": 28305061.157024793,
-      "median_roi": 1.108303249097473,
-      "roi_sample_size": 121
-    },
-    {
-      "primary_genre": "Thriller",
-      "movie_count": 84,
-      "total_revenue": 2219150647.0,
-      "avg_budget": 26860365.34090909,
-      "median_roi": 0.1867556,
-      "roi_sample_size": 44
+      "total_revenue": 11735306658.0,
+      "avg_budget": 28230587.289855074,
+      "median_roi": 1.134220865725207,
+      "roi_sample_size": 138
     },
     {
       "primary_genre": "Fantasy",
       "movie_count": 42,
-      "total_revenue": 1796344150.0,
-      "avg_budget": 17811324.0,
-      "median_roi": 1.01448475,
-      "roi_sample_size": 27
+      "total_revenue": 4424555988.0,
+      "avg_budget": 30870214.303030305,
+      "median_roi": 1.0918119395238095,
+      "roi_sample_size": 32
     },
     {
-      "primary_genre": "Mystery",
-      "movie_count": 48,
-      "total_revenue": 1754791718.0,
-      "avg_budget": 15539928.787878787,
-      "median_roi": 1.35,
-      "roi_sample_size": 33
-    },
-    {
-      "primary_genre": "Documentary",
-      "movie_count": 386,
-      "total_revenue": 1034535137.0,
-      "avg_budget": 4280785.188679245,
-      "median_roi": 0.3108362307692308,
-      "roi_sample_size": 51
+      "primary_genre": "Thriller",
+      "movie_count": 83,
+      "total_revenue": 2944697583.0,
+      "avg_budget": 23344601.25,
+      "median_roi": 0.1867556,
+      "roi_sample_size": 60
     },
     {
       "primary_genre": "Sci-Fi",
       "movie_count": 62,
-      "total_revenue": 727512029.0,
-      "avg_budget": 18715666.666666668,
-      "median_roi": 0.23692172083333335,
-      "roi_sample_size": 24
+      "total_revenue": 2785212265.0,
+      "avg_budget": 29045297.2972973,
+      "median_roi": 0.240694475,
+      "roi_sample_size": 37
     },
     {
-      "primary_genre": "Romance",
-      "movie_count": 38,
-      "total_revenue": 594986953.0,
-      "avg_budget": 22664444.444444444,
-      "median_roi": 0.04928412,
-      "roi_sample_size": 18
+      "primary_genre": "Mystery",
+      "movie_count": 48,
+      "total_revenue": 2080487328.0,
+      "avg_budget": 15993911.842105264,
+      "median_roi": 1.4422126666666668,
+      "roi_sample_size": 38
+    },
+    {
+      "primary_genre": "Documentary",
+      "movie_count": 385,
+      "total_revenue": 1116662246.0,
+      "avg_budget": 3983096.73015873,
+      "median_roi": 0.03863195,
+      "roi_sample_size": 61
+    },
+    {
+      "primary_genre": "Unknown",
+      "movie_count": 34,
+      "total_revenue": 926799250.0,
+      "avg_budget": 55887500.0,
+      "median_roi": -0.14969344499999998,
+      "roi_sample_size": 8
     },
     {
       "primary_genre": "Western",
       "movie_count": 23,
-      "total_revenue": 566353656.0,
-      "avg_budget": 15319918.866666667,
+      "total_revenue": 722113773.0,
+      "avg_budget": 16510238.411764706,
       "median_roi": 1.3713116134123973,
-      "roi_sample_size": 15
+      "roi_sample_size": 17
+    },
+    {
+      "primary_genre": "Romance",
+      "movie_count": 38,
+      "total_revenue": 595468202.0,
+      "avg_budget": 21476842.10526316,
+      "median_roi": 0.10740064,
+      "roi_sample_size": 19
     },
     {
       "primary_genre": "Musical",
@@ -250,14 +258,6 @@
       "avg_budget": 3330285.714285714,
       "median_roi": 1.6319951338199514,
       "roi_sample_size": 7
-    },
-    {
-      "primary_genre": "Unknown",
-      "movie_count": 34,
-      "total_revenue": 0.0,
-      "avg_budget": null,
-      "median_roi": null,
-      "roi_sample_size": 0
     },
     {
       "primary_genre": "War",
@@ -406,51 +406,51 @@
     },
     {
       "decade": 1940,
-      "total_revenue": 1002695690.0,
-      "avg_budget": 1578314.8481012657,
-      "movie_count": 79
+      "total_revenue": 1001695690.0,
+      "avg_budget": 1591980.1282051282,
+      "movie_count": 78
     },
     {
       "decade": 1950,
-      "total_revenue": 1866019198.0,
-      "avg_budget": 2291455.863247863,
-      "movie_count": 117
+      "total_revenue": 1857519198.0,
+      "avg_budget": 2300433.9310344825,
+      "movie_count": 116
     },
     {
       "decade": 1960,
-      "total_revenue": 4466221621.0,
-      "avg_budget": 4593960.879746836,
-      "movie_count": 158
+      "total_revenue": 4451341621.0,
+      "avg_budget": 4528306.532051282,
+      "movie_count": 156
     },
     {
       "decade": 1970,
-      "total_revenue": 12528132897.0,
-      "avg_budget": 5570049.011627907,
-      "movie_count": 258
+      "total_revenue": 12540892897.0,
+      "avg_budget": 5574601.73151751,
+      "movie_count": 257
     },
     {
       "decade": 1980,
-      "total_revenue": 34894785077.0,
-      "avg_budget": 12465202.461229946,
-      "movie_count": 748
+      "total_revenue": 34978510931.0,
+      "avg_budget": 12424138.066489361,
+      "movie_count": 752
     },
     {
       "decade": 1990,
-      "total_revenue": 92330437184.0,
-      "avg_budget": 27334390.901049476,
-      "movie_count": 1334
+      "total_revenue": 92377202384.0,
+      "avg_budget": 27299189.330838323,
+      "movie_count": 1336
     },
     {
       "decade": 2000,
-      "total_revenue": 180787412279.0,
-      "avg_budget": 37095683.13636363,
-      "movie_count": 1892
+      "total_revenue": 180856461464.0,
+      "avg_budget": 36968932.80631579,
+      "movie_count": 1900
     },
     {
       "decade": 2010,
-      "total_revenue": 54432951870.0,
-      "avg_budget": 48711903.48525469,
-      "movie_count": 373
+      "total_revenue": 208648661466.0,
+      "avg_budget": 50232024.824979454,
+      "movie_count": 1217
     }
   ],
   "top_roi_movies": [
@@ -471,17 +471,17 @@
       "roi": 4142.984983333334
     },
     {
-      "title": "Birth of a Nation, The (1915)",
-      "release_year": 1915,
-      "primary_genre": "Drama",
+      "title": "Fist of Fury (Chinese Connection, The) (Jing wu men) (1972)",
+      "release_year": 1972,
+      "primary_genre": "Action",
       "budget": 100000.0,
       "revenue": 100000000.0,
       "roi": 999.0
     },
     {
-      "title": "Fist of Fury (Chinese Connection, The) (Jing wu men) (1972)",
-      "release_year": 1972,
-      "primary_genre": "Action",
+      "title": "Birth of a Nation, The (1915)",
+      "release_year": 1915,
+      "primary_genre": "Drama",
       "budget": 100000.0,
       "revenue": 100000000.0,
       "roi": 999.0
@@ -519,20 +519,20 @@
       "roi": 438.6165846153846
     },
     {
+      "title": "The Gallows (2015)",
+      "release_year": 2015,
+      "primary_genre": "Horror",
+      "budget": 100000.0,
+      "revenue": 42964410.0,
+      "roi": 428.6441
+    },
+    {
       "title": "Bambi (1942)",
       "release_year": 1942,
       "primary_genre": "Animation",
       "budget": 858000.0,
       "revenue": 267447150.0,
       "roi": 310.709965034965
-    },
-    {
-      "title": "Mad Max (1979)",
-      "release_year": 1979,
-      "primary_genre": "Action",
-      "budget": 350000.0,
-      "revenue": 100000000.0,
-      "roi": 284.7142857142857
     }
   ],
   "top_revenue_movies": [
@@ -553,6 +553,30 @@
       "profit": 2064162353.0
     },
     {
+      "title": "Star Wars: Episode VII - The Force Awakens (2015)",
+      "release_year": 2015,
+      "primary_genre": "Action",
+      "budget": 245000000.0,
+      "revenue": 2068223624.0,
+      "profit": 1823223624.0
+    },
+    {
+      "title": "Avengers: Infinity War - Part I (2018)",
+      "release_year": 2018,
+      "primary_genre": "Action",
+      "budget": 300000000.0,
+      "revenue": 2052415039.0,
+      "profit": 1752415039.0
+    },
+    {
+      "title": "Jurassic World (2015)",
+      "release_year": 2015,
+      "primary_genre": "Action",
+      "budget": 150000000.0,
+      "revenue": 1671537444.0,
+      "profit": 1521537444.0
+    },
+    {
       "title": "Avengers, The (2012)",
       "release_year": 2012,
       "primary_genre": "Action",
@@ -561,60 +585,36 @@
       "profit": 1298815515.0
     },
     {
+      "title": "Furious 7 (2015)",
+      "release_year": 2015,
+      "primary_genre": "Action",
+      "budget": 190000000.0,
+      "revenue": 1515400000.0,
+      "profit": 1325400000.0
+    },
+    {
+      "title": "Avengers: Age of Ultron (2015)",
+      "release_year": 2015,
+      "primary_genre": "Action",
+      "budget": 235000000.0,
+      "revenue": 1405403694.0,
+      "profit": 1170403694.0
+    },
+    {
+      "title": "Black Panther (2017)",
+      "release_year": 2017,
+      "primary_genre": "Action",
+      "budget": 200000000.0,
+      "revenue": 1349926083.0,
+      "profit": 1149926083.0
+    },
+    {
       "title": "Harry Potter and the Deathly Hallows: Part 2 (2011)",
       "release_year": 2011,
       "primary_genre": "Action",
       "budget": 125000000.0,
       "revenue": 1341511219.0,
       "profit": 1216511219.0
-    },
-    {
-      "title": "Transformers: Dark of the Moon (2011)",
-      "release_year": 2011,
-      "primary_genre": "Action",
-      "budget": 195000000.0,
-      "revenue": 1123794079.0,
-      "profit": 928794079.0
-    },
-    {
-      "title": "Lord of the Rings: The Return of the King, The (2003)",
-      "release_year": 2003,
-      "primary_genre": "Action",
-      "budget": 94000000.0,
-      "revenue": 1118888979.0,
-      "profit": 1024888979.0
-    },
-    {
-      "title": "Dark Knight Rises, The (2012)",
-      "release_year": 2012,
-      "primary_genre": "Action",
-      "budget": 250000000.0,
-      "revenue": 1081041287.0,
-      "profit": 831041287.0
-    },
-    {
-      "title": "Toy Story 3 (2010)",
-      "release_year": 2010,
-      "primary_genre": "Adventure",
-      "budget": 200000000.0,
-      "revenue": 1067316101.0,
-      "profit": 867316101.0
-    },
-    {
-      "title": "Pirates of the Caribbean: Dead Man's Chest (2006)",
-      "release_year": 2006,
-      "primary_genre": "Action",
-      "budget": 200000000.0,
-      "revenue": 1066179747.0,
-      "profit": 866179747.0
-    },
-    {
-      "title": "Jurassic Park (1993)",
-      "release_year": 1993,
-      "primary_genre": "Action",
-      "budget": 63000000.0,
-      "revenue": 1058454230.0,
-      "profit": 995454230.0
     }
   ]
 }
