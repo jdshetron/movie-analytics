@@ -1,8 +1,10 @@
 """Join MovieLens ratings/movies/links with TMDB financials into the site's data files.
 
 Reads:
-    data/raw/ml-latest-small/{ratings,movies,links}.csv
-    data/raw/tmdb_movies.csv          (from scripts/fetch_tmdb.py)
+    data/raw/ml-32m/movies.csv           full MovieLens 32M movie catalog
+    data/raw/ml-32m/links_top10k.csv     top 10,000 most-rated movies (from scripts/select_movies.py)
+    data/raw/ml-32m/ratings_sample.csv   400K-row sample of their ratings (from scripts/select_movies.py)
+    data/raw/tmdb_movies.csv             TMDB financials (from scripts/fetch_tmdb.py)
 
 Writes:
     docs/data/movies.json       one row per movie: attributes + financials
@@ -44,8 +46,9 @@ YEAR_RE = re.compile(r"\((\d{4})\)\s*$")
 
 
 def load_movies() -> pd.DataFrame:
-    movies = pd.read_csv(RAW / "ml-latest-small" / "movies.csv")
-    links = pd.read_csv(RAW / "ml-latest-small" / "links.csv", dtype={"tmdbId": "Int64"})
+    links = pd.read_csv(RAW / "ml-32m" / "links_top10k.csv", dtype={"tmdbId": "Int64"})
+    movies = pd.read_csv(RAW / "ml-32m" / "movies.csv")
+    movies = movies[movies["movieId"].isin(set(links["movieId"]))].reset_index(drop=True)
     tmdb = pd.read_csv(RAW / "tmdb_movies.csv")
 
     movies["release_year"] = movies["title"].str.extract(YEAR_RE).astype("Int64")
@@ -74,7 +77,7 @@ def load_movies() -> pd.DataFrame:
 
 
 def load_ratings() -> pd.DataFrame:
-    ratings = pd.read_csv(RAW / "ml-latest-small" / "ratings.csv")
+    ratings = pd.read_csv(RAW / "ml-32m" / "ratings_sample.csv")
     ratings["rating_date"] = pd.to_datetime(ratings["timestamp"], unit="s")
     ratings["rating_year"] = ratings["rating_date"].dt.year
     return ratings
@@ -129,15 +132,19 @@ def main() -> None:
 
     # Grouped by each movie's single primary genre (first genre MovieLens lists),
     # so genre buckets are mutually exclusive and totals don't double-count
-    # multi-genre movies. See docs/index.html closing section for this note.
+    # multi-genre movies. "Unknown" (no genre listed at all) is excluded from
+    # genre breakdowns since it isn't a real genre. See docs/index.html
+    # closing section for this note.
     genre_counts = (
-        panel.groupby("primary_genre")
+        panel[panel["primary_genre"] != "Unknown"]
+        .groupby("primary_genre")
         .agg(rating_count=("rating", "size"), avg_rating=("rating", "mean"))
         .sort_values("rating_count", ascending=False)
     )
 
     genre_financials = (
-        movies.groupby("primary_genre")
+        movies[movies["primary_genre"] != "Unknown"]
+        .groupby("primary_genre")
         .agg(
             movie_count=("movieId", "size"),
             total_revenue=("revenue", "sum"),

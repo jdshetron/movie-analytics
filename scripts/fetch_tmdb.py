@@ -17,7 +17,7 @@ import requests
 from dotenv import load_dotenv
 
 ROOT = Path(__file__).resolve().parent.parent
-LINKS_CSV = ROOT / "data" / "raw" / "ml-latest-small" / "links.csv"
+LINKS_CSV = ROOT / "data" / "raw" / "ml-32m" / "links_top10k.csv"
 OUT_CSV = ROOT / "data" / "raw" / "tmdb_movies.csv"
 
 FIELDS = [

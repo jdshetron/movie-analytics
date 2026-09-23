@@ -26,12 +26,13 @@
     <h1>What movie ratings and box office data tell us</h1>
     <div class="byline">By John Shetron &middot; Financial Data Analytics &middot; MovieLens + TMDB data</div>
     <p class="summary">
-      This report analyzes 100,836 ratings that 610 MovieLens users gave to 9,724
-      movies between 1996 and 2018, joined with box-office budget and revenue
-      figures from The Movie Database (TMDB) for the subset of those films with
-      financial data available. It looks at which genres get watched and rated
-      the most, which ones are actually worth the money, and how Hollywood
-      spending and audience taste have shifted across decades.
+      This report analyzes a 400,000-rating sample that 125,278 MovieLens
+      users gave to 9,843 movies between 1996 and 2023, joined with
+      box-office budget and revenue figures from The Movie Database (TMDB)
+      for the subset of those films with financial data available. It looks
+      at which genres get watched and rated the most, which ones are
+      actually worth the money, and how Hollywood spending and audience
+      taste have shifted across decades.
     </p>
   </section>
 
@@ -81,7 +82,7 @@
     <h2>Rating activity is uneven year to year, not steadily growing</h2>
     <p>
       The number of ratings logged per year swings considerably across the
-      dataset's 1996–2018 span, with visible spikes rather than a smooth
+      dataset's 1996–2023 span, with visible spikes rather than a smooth
       upward trend. These swings line up with MovieLens's own data-collection
       history more than with any real change in movie-watching habits, which
       is an important caveat for anyone using this data to talk about
@@ -191,17 +192,35 @@
     <section>
       <h3>Sources</h3>
       <p>
-        Ratings and movie titles/genres come from <strong>MovieLens
-        <code>ml-latest-small</code></strong>, a public research dataset from
-        GroupLens Research at the University of Minnesota: 100,836 ratings
-        from 610 users, collected between March 1996 and September 2018. The
-        release's catalog lists 9,742 movies, 18 of which received no
-        ratings at all and are dropped, leaving 9,724 movies in this report.
-        Budget, revenue, runtime, popularity, and vote
-        statistics come from <strong>The Movie Database (TMDB)</strong>'s
-        public API, matched to each MovieLens movie via the <code>tmdbId</code>
-        identifier in MovieLens's own <code>links.csv</code> crosswalk file.
-        This product uses the TMDB API but is not endorsed or certified by TMDB.
+        Ratings and movie titles/genres come from <strong>MovieLens 32M</strong>,
+        a public research dataset from GroupLens Research at the University
+        of Minnesota: 32,000,204 ratings across 87,585 movies from 200,948
+        users, collected between March 1996 and October 2023 (released May
+        2024) — the most recent MovieLens release GroupLens has published.
+        Budget, revenue, runtime, popularity, and vote statistics come from
+        <strong>The Movie Database (TMDB)</strong>'s public API, matched to
+        each MovieLens movie via the <code>tmdbId</code> identifier in
+        MovieLens's own <code>links.csv</code> crosswalk file, and reflect
+        TMDB's numbers as of when this site was built (not adjusted for
+        inflation). This product uses the TMDB API but is not endorsed or
+        certified by TMDB.
+      </p>
+    </section>
+
+    <section>
+      <h3>Sampling this report is built on</h3>
+      <p>
+        The full 32M-rating release is too large to fetch financials for or
+        load in a browser dashboard, so this report uses a reduced,
+        reproducible subset: the <strong>10,000 most-rated movies</strong>
+        (out of 87,585) — which still account for 96.7% of all 32 million
+        ratings — followed by a fixed-seed random sample of
+        <strong>400,000 ratings</strong> from the ~30.9 million ratings
+        those movies received. The seed (42) and both thresholds are set in
+        <code>scripts/select_movies.py</code>, so re-running the pipeline
+        reproduces the same sample exactly. 157 of the 10,000 selected
+        movies happened to draw zero ratings in this particular sample and
+        are dropped, leaving 9,843 movies in this report.
       </p>
     </section>
 
@@ -220,11 +239,9 @@
     <section>
       <h3>Rows dropped or set aside</h3>
       <p>
-        No rating rows were dropped. 18 movies in the MovieLens catalog
-        received no ratings at all and are dropped entirely, since this
-        report is built around the ratings panel. On the financial side:
-        <span id="stat-no-financials">—</span> of the remaining 9,724 movies
-        have no matching TMDB record or report $0 for both
+        Beyond the sampling above, no additional rating rows were dropped.
+        On the financial side: <span id="stat-no-financials">—</span> of the
+        9,843 movies have no matching TMDB record or report $0 for both
         budget and revenue, which TMDB generally uses to mean "unknown," not
         "free" — these are excluded from every revenue, budget, profit, and
         ROI calculation (they remain in rating-based findings). Return on

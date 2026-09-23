@@ -207,6 +207,8 @@
         const m = movieMap.get(r.movieId);
         bucketValue = m ? m[breakdownKey] : null;
       }
+      // "Unknown" (no genre listed) isn't a real genre — leave it out of genre breakdowns.
+      if (breakdownKey === 'primary_genre' && bucketValue === 'Unknown') continue;
       const key = bucketValue === null || bucketValue === undefined ? '__unknown__' : bucketValue;
       if (!buckets.has(key)) buckets.set(key, { value: bucketValue, ratingRows: [] });
       buckets.get(key).ratingRows.push(r);
