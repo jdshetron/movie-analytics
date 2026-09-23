@@ -19,7 +19,7 @@
   };
   const PALETTE = [colors.series1, colors.series2, colors.series3, colors.series4, colors.series5, colors.series6, colors.series7, colors.series8];
 
-  Chart.defaults.font.family = "Inter, system-ui, -apple-system, 'Segoe UI', sans-serif";
+  Chart.defaults.font.family = "'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif";
   Chart.defaults.color = colors.textSecondary;
   Chart.defaults.borderColor = colors.grid;
 
@@ -267,6 +267,12 @@
   }
 
   function render() {
+    const grid = document.getElementById('chart-grid');
+    if (grid.style.display !== 'none') {
+      grid.style.opacity = '0.55';
+      requestAnimationFrame(() => requestAnimationFrame(() => { grid.style.opacity = '1'; }));
+    }
+
     const filters = currentFilters();
     const measureKey = document.getElementById('measure-select').value;
     const breakdownKey = document.getElementById('breakdown-select').value;
@@ -311,12 +317,17 @@
     const avgRoi = roiMovies.length ? roiMovies.reduce((s, m) => s + m.roi, 0) / roiMovies.length : null;
 
     const tiles = [
-      { label: 'Ratings in view', value: compactNumber(filtered.length) },
-      { label: 'Movies in view', value: compactNumber(distinctMovies.size) },
-      { label: 'Average rating', value: filtered.length ? avgRating.toFixed(2) + ' / 5' : '—' },
-      { label: 'Box-office revenue in view', value: financedMovies.length ? compactCurrency(totalRevenue) : '—' },
+      { label: 'Ratings in view', target: filtered.length, format: compactNumber },
+      { label: 'Movies in view', target: distinctMovies.size, format: compactNumber },
+      { label: 'Average rating', target: avgRating, format: (v) => (filtered.length ? v.toFixed(2) + ' / 5' : '—') },
+      {
+        label: 'Box-office revenue in view',
+        target: totalRevenue,
+        format: (v) => (financedMovies.length ? compactCurrency(v) : '—'),
+      },
     ];
     const row = document.getElementById('dash-stat-row');
+    const isFirstRender = row.childElementCount === 0;
     row.textContent = '';
     for (const t of tiles) {
       const tile = document.createElement('div');
@@ -326,8 +337,8 @@
       label.textContent = t.label;
       const value = document.createElement('div');
       value.className = 'value';
-      value.textContent = t.value;
       tile.append(label, value);
+      animateCount(value, t.target, t.format, isFirstRender ? 1000 : 450);
       row.appendChild(tile);
     }
   }

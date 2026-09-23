@@ -17,7 +17,7 @@
     surface: cssVar('--surface'),
   };
 
-  Chart.defaults.font.family = "Inter, system-ui, -apple-system, 'Segoe UI', sans-serif";
+  Chart.defaults.font.family = "'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif";
   Chart.defaults.color = colors.textSecondary;
   Chart.defaults.borderColor = colors.grid;
 
@@ -43,27 +43,28 @@
 
   const h = data.headline;
 
-  // ---- Stat tiles ----
+  // ---- Stat tiles (animated count-up) ----
   const stats = [
-    { label: 'Ratings analyzed', value: compactNumber(h.total_ratings) },
-    { label: 'Movies covered', value: compactNumber(h.total_movies) },
-    { label: 'Average rating', value: h.avg_rating_overall.toFixed(2) + ' / 5' },
-    { label: 'Box office revenue tracked', value: compactCurrency(h.total_revenue_tracked) },
-    { label: 'Median ROI (financed titles)', value: pct(h.median_roi) },
+    { label: 'Ratings analyzed', target: h.total_ratings, format: compactNumber },
+    { label: 'Movies covered', target: h.total_movies, format: compactNumber },
+    { label: 'Average rating', target: h.avg_rating_overall, format: (v) => v.toFixed(2) + ' / 5' },
+    { label: 'Box office revenue tracked', target: h.total_revenue_tracked, format: compactCurrency },
+    { label: 'Median ROI (financed titles)', target: h.median_roi, format: pct },
   ];
   const statRow = document.getElementById('stat-row');
-  for (const s of stats) {
+  stats.forEach((s, i) => {
     const tile = document.createElement('div');
     tile.className = 'stat-tile';
+    tile.style.animationDelay = `${i * 70}ms`;
     const label = document.createElement('div');
     label.className = 'label';
     label.textContent = s.label;
     const value = document.createElement('div');
     value.className = 'value';
-    value.textContent = s.value;
     tile.append(label, value);
     statRow.appendChild(tile);
-  }
+    animateCount(value, s.target, s.format, 1100);
+  });
 
   // ---- In-prose numbers ----
   const genreByVolume = [...data.genre_rating_counts].sort((a, b) => b.rating_count - a.rating_count);
@@ -278,4 +279,6 @@
     colors.series6,
     { horizontal: true, tickFormat: compactCurrency, tooltipLabel: (ctx) => compactCurrency(ctx.parsed.x) }
   );
+
+  setupReveal();
 })();
