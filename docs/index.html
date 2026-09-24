@@ -7,10 +7,18 @@
 <meta name="description" content="Ratings and box-office financial findings from MovieLens and TMDB movie data.">
 <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="report-page">
 
 <nav class="site-nav">
   <a class="brand" href="index.html">
+    <svg class="brand-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+      <circle cx="12" cy="6.8" r="2.1" fill="currentColor"/>
+      <circle cx="12" cy="17.2" r="2.1" fill="currentColor"/>
+      <circle cx="6.8" cy="12" r="2.1" fill="currentColor"/>
+      <circle cx="17.2" cy="12" r="2.1" fill="currentColor"/>
+      <circle cx="12" cy="12" r="1.1" fill="currentColor"/>
+    </svg>
     <span class="mark">MOVIE ANALYTICS</span>
     <span class="sub">ratings &amp; box office</span>
   </a>
@@ -18,31 +26,55 @@
     <a href="index.html" class="active">Report</a>
     <a href="dashboard.html">Dashboard</a>
   </div>
+  <div class="reel-progress" aria-hidden="true"><span id="reel-progress-fill"></span></div>
 </nav>
 
 <main class="page">
 
   <section class="hero">
-    <h1>What movie ratings and box office data tell us</h1>
-    <div class="byline">By John Shetron &middot; Financial Data Analytics &middot; MovieLens + TMDB data</div>
-    <p class="summary">
-      This report analyzes a 400,000-rating sample that 125,278 MovieLens
-      users gave to 9,843 movies between 1996 and 2023, joined with
-      box-office budget and revenue figures from The Movie Database (TMDB)
-      for the subset of those films with financial data available. It looks
-      at which genres get watched and rated the most, which ones are
-      actually worth the money, and how Hollywood spending and audience
-      taste have shifted across decades.
-    </p>
+    <div class="screen">
+      <div class="marquee-lights" aria-hidden="true"></div>
+      <div class="screen-inner">
+        <div class="now-showing">Now showing</div>
+        <h1>What movie ratings and box office data tell us</h1>
+        <div class="byline">By John Shetron &middot; Financial Data Analytics &middot; MovieLens + TMDB data</div>
+        <p class="summary">
+          This report analyzes a 400,000-rating sample that 125,278 MovieLens
+          users gave to 9,843 movies between 1996 and 2023, joined with
+          box-office budget and revenue figures from The Movie Database (TMDB)
+          for the subset of those films with financial data available. It looks
+          at which genres get watched and rated the most, which ones are
+          actually worth the money, and how Hollywood spending and audience
+          taste have shifted across decades.
+        </p>
+        <div class="hero-actions">
+          <a class="btn-primary" href="#finding-1">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+            Start the show
+          </a>
+          <a class="btn-ghost" href="dashboard.html">Explore the dashboard</a>
+          <span class="rating-badge" title="A joke rating, not a real one">Rated <strong>D</strong> for Data &middot; 8 scenes</span>
+        </div>
+      </div>
+    </div>
   </section>
 
+  <div class="section-label">Box office at a glance</div>
   <section class="stat-row" id="stat-row">
     <!-- filled by report.js from docs/data/report_data.json -->
   </section>
 
-  <!-- ===================== FINDING 1 ===================== -->
-  <section class="finding reveal" id="finding-1">
-    <div class="kicker">Finding 01 &middot; Engagement</div>
+  <section class="spotlight-bar reveal" id="spotlight-bar" aria-labelledby="spotlight-heading">
+    <div class="spotlight-head">
+      <h2 id="spotlight-heading">Follow one genre through the show</h2>
+      <p>Pick a genre and it stays lit up in every genre chart below, with its rank called out in each scene.</p>
+    </div>
+    <div class="chip-row" id="spotlight-chips" role="group" aria-label="Spotlight a genre"></div>
+  </section>
+
+  <!-- ===================== SCENE 1 ===================== -->
+  <section class="finding reveal" id="finding-1" data-scene="Engagement">
+    <div class="kicker">Scene 01 &middot; Engagement</div>
     <h2>A handful of genres draw far more ratings than the rest</h2>
     <p>
       Grouping every movie by its primary genre and counting the ratings each
@@ -52,15 +84,16 @@
       handful of mainstream genres carry most of the viewing activity, while
       niche genres like Documentary or War see a fraction of the engagement.
     </p>
+    <p class="spotlight-note" data-spotlight-for="volume" hidden></p>
     <div class="chart-card">
       <div class="chart-title">Ratings received, by primary genre (top 10)</div>
       <canvas id="chart-genre-volume"></canvas>
     </div>
   </section>
 
-  <!-- ===================== FINDING 2 ===================== -->
-  <section class="finding reveal" id="finding-2">
-    <div class="kicker">Finding 02 &middot; Quality</div>
+  <!-- ===================== SCENE 2 ===================== -->
+  <section class="finding reveal" id="finding-2" data-scene="Quality">
+    <div class="kicker">Scene 02 &middot; Quality</div>
     <h2>The most-watched genres aren't the highest-rated ones</h2>
     <p>
       Ranking genres by their average rating instead of rating volume flips
@@ -70,15 +103,16 @@
       fewer, more deliberate viewers often rates higher than one with a huge,
       casual audience.
     </p>
-    <div class="chart-card">
+    <p class="spotlight-note" data-spotlight-for="avgRating" hidden></p>
+    <div class="chart-card" data-quiz="avgRating">
       <div class="chart-title">Average rating, by primary genre (min. 200 ratings)</div>
       <canvas id="chart-genre-avg-rating"></canvas>
     </div>
   </section>
 
-  <!-- ===================== FINDING 3 ===================== -->
-  <section class="finding reveal" id="finding-3">
-    <div class="kicker">Finding 03 &middot; Activity over time</div>
+  <!-- ===================== SCENE 3 ===================== -->
+  <section class="finding reveal" id="finding-3" data-scene="Activity">
+    <div class="kicker">Scene 03 &middot; Activity over time</div>
     <h2>Rating activity is uneven year to year, not steadily growing</h2>
     <p>
       The number of ratings logged per year swings considerably across the
@@ -94,9 +128,9 @@
     </div>
   </section>
 
-  <!-- ===================== FINDING 4 ===================== -->
-  <section class="finding reveal" id="finding-4">
-    <div class="kicker">Finding 04 &middot; Rating trends</div>
+  <!-- ===================== SCENE 4 ===================== -->
+  <section class="finding reveal" id="finding-4" data-scene="Trends">
+    <div class="kicker">Scene 04 &middot; Rating trends</div>
     <h2>Average ratings have drifted over the years</h2>
     <p>
       Looking at the mean rating given per year (rather than the count)
@@ -111,9 +145,9 @@
     </div>
   </section>
 
-  <!-- ===================== FINDING 5 ===================== -->
-  <section class="finding reveal" id="finding-5">
-    <div class="kicker">Finding 05 &middot; Box office</div>
+  <!-- ===================== SCENE 5 ===================== -->
+  <section class="finding reveal" id="finding-5" data-scene="Box office">
+    <div class="kicker">Scene 05 &middot; Box office</div>
     <h2>A small set of genres account for most tracked box-office revenue</h2>
     <p>
       Restricting to the <span id="stat-fin-count">—</span> movies with
@@ -123,15 +157,16 @@
       leads the pack, reflecting how blockbuster-scale spending clusters
       into a few genres.
     </p>
+    <p class="spotlight-note" data-spotlight-for="revenue" hidden></p>
     <div class="chart-card">
       <div class="chart-title">Total box-office revenue tracked, by primary genre</div>
       <canvas id="chart-genre-revenue"></canvas>
     </div>
   </section>
 
-  <!-- ===================== FINDING 6 ===================== -->
-  <section class="finding reveal" id="finding-6">
-    <div class="kicker">Finding 06 &middot; Return on investment</div>
+  <!-- ===================== SCENE 6 ===================== -->
+  <section class="finding reveal" id="finding-6" data-scene="ROI">
+    <div class="kicker">Scene 06 &middot; Return on investment</div>
     <h2>The highest-grossing genres aren't the best investments</h2>
     <p>
       Revenue alone rewards big-budget genres by default. Dividing profit by
@@ -146,15 +181,16 @@
       with fewer than 20 financed titles are left off the chart below, since
       a median of a handful of movies is too noisy to compare fairly.
     </p>
-    <div class="chart-card">
+    <p class="spotlight-note" data-spotlight-for="roi" hidden></p>
+    <div class="chart-card" data-quiz="roi">
       <div class="chart-title">Median return on investment, by primary genre (min. 20 financed titles)</div>
       <canvas id="chart-genre-roi"></canvas>
     </div>
   </section>
 
-  <!-- ===================== FINDING 7 ===================== -->
-  <section class="finding reveal" id="finding-7">
-    <div class="kicker">Finding 07 &middot; Decades</div>
+  <!-- ===================== SCENE 7 ===================== -->
+  <section class="finding reveal" id="finding-7" data-scene="Decades">
+    <div class="kicker">Scene 07 &middot; Decades</div>
     <h2>Tracked box-office revenue has grown decade over decade</h2>
     <p>
       Summing revenue by the decade a movie was released (again limited to
@@ -164,30 +200,69 @@
       have complete TMDB financial records.
     </p>
     <div class="chart-card">
-      <div class="chart-title">Total box-office revenue tracked, by release decade</div>
+      <div class="card-head">
+        <div class="chart-title">Total box-office revenue tracked, by release decade</div>
+        <button type="button" class="btn-reel" id="play-reel">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+          <span>Play the reel</span>
+        </button>
+      </div>
+      <p class="reel-readout" id="reel-readout" aria-live="polite">Play the reel to roll through the decades one at a time.</p>
       <canvas id="chart-decade-revenue"></canvas>
     </div>
   </section>
 
-  <!-- ===================== FINDING 8 ===================== -->
-  <section class="finding reveal" id="finding-8">
-    <div class="kicker">Finding 08 &middot; Standouts</div>
+  <!-- ===================== SCENE 8 ===================== -->
+  <section class="finding reveal" id="finding-8" data-scene="Standouts">
+    <div class="kicker">Scene 08 &middot; Standouts</div>
     <h2>The ten highest-grossing movies in the dataset</h2>
     <p>
       Ranking individual movies by revenue rather than genre surfaces the
       familiar blockbusters driving the totals above — a useful sanity
       check that the aggregate numbers are being pulled up by real,
-      recognizable titles rather than a data artifact.
+      recognizable titles rather than a data artifact. Click any bar to
+      print its ticket.
     </p>
-    <div class="chart-card">
-      <div class="chart-title">Top 10 movies by box-office revenue</div>
-      <canvas id="chart-top-revenue"></canvas>
+    <div class="chart-card ticket-layout" data-quiz="topMovie">
+      <div class="ticket-chart">
+        <div class="chart-title">Top 10 movies by box-office revenue</div>
+        <canvas id="chart-top-revenue"></canvas>
+      </div>
+      <aside class="movie-ticket" id="movie-ticket" aria-live="polite">
+        <div class="ticket-top">
+          <span class="ticket-admit">Admit one</span>
+          <span class="ticket-rank" id="ticket-rank"></span>
+        </div>
+        <div class="ticket-title" id="ticket-title"></div>
+        <div class="ticket-meta" id="ticket-meta"></div>
+        <dl class="ticket-stats">
+          <div><dt>Budget</dt><dd id="ticket-budget"></dd></div>
+          <div><dt>Box office</dt><dd id="ticket-revenue"></dd></div>
+          <div><dt>Profit</dt><dd id="ticket-profit"></dd></div>
+          <div><dt>Return</dt><dd id="ticket-roi"></dd></div>
+        </dl>
+        <div class="ticket-nav">
+          <button type="button" id="ticket-prev" aria-label="Previous movie">&larr;</button>
+          <span class="ticket-stub" aria-hidden="true"></span>
+          <button type="button" id="ticket-next" aria-label="Next movie">&rarr;</button>
+        </div>
+      </aside>
     </div>
   </section>
 
-  <!-- ===================== CLOSING ===================== -->
-  <section class="closing reveal">
-    <h2>About this data</h2>
+  <!-- ===================== CREDITS ===================== -->
+  <section class="closing reveal" id="credits" data-scene="Credits">
+    <div class="credits-roll">
+      <div class="credits-kicker">Roll credits</div>
+      <h2>About this data</h2>
+      <dl class="credits-list">
+        <div><dt>Directed &amp; analyzed by</dt><dd>John Shetron</dd></div>
+        <div><dt>Ratings</dt><dd>GroupLens Research &middot; MovieLens 32M</dd></div>
+        <div><dt>Box office figures</dt><dd>The Movie Database (TMDB)</dd></div>
+        <div><dt>Built with</dt><dd>Python &middot; pandas &middot; Chart.js</dd></div>
+        <div class="credits-score" id="credits-score" hidden><dt>Your predictions</dt><dd id="credits-score-value"></dd></div>
+      </dl>
+    </div>
 
     <section>
       <h3>Sources</h3>
@@ -247,7 +322,8 @@
         ROI calculation (they remain in rating-based findings). Return on
         investment is left blank for any movie with a reported budget under
         $10,000, since a tiny or placeholder budget produces absurd ratios
-        that would distort genre averages.
+        that would distort genre averages. Movies with no genre listed at all
+        are left out of the genre charts, since "no genre" isn't a genre.
       </p>
     </section>
 
@@ -263,7 +339,7 @@
         <code>(revenue − budget) / budget</code>, computed per movie; genre
         and headline ROI figures report the <strong>median</strong> ROI
         within each group rather than the mean, since ROI is a ratio that a
-        handful of extreme low-budget hits can distort badly (see Finding
+        handful of extreme low-budget hits can distort badly (see Scene
         06). <strong>Decade</strong> is the movie's release year rounded
         down to the nearest 10. All financial figures are TMDB's reported
         (nominal) values, not adjusted for inflation.
@@ -272,6 +348,11 @@
   </section>
 
 </main>
+
+<div class="spotlight-pill" id="spotlight-pill" hidden>
+  <span>Spotlight: <strong id="spotlight-pill-name"></strong></span>
+  <button type="button" id="spotlight-clear" aria-label="Turn off the genre spotlight">&times;</button>
+</div>
 
 <footer class="site-footer">
   MovieLens data from GroupLens Research &middot; Movie data from

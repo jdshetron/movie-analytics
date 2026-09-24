@@ -47,8 +47,12 @@ fixed-seed 400,000-row random sample of their ratings).
 - `docs/` — the published GitHub Pages site:
   - `index.html` / `dashboard.html` — the two pages
   - `css/style.css` — shared styles (nav, fonts, colors, both pages)
-  - `js/report.js` — fetches `data/report_data.json` and renders the report's
-    stat tiles and 8 charts
+  - `js/report.js` — fetches `data/report_data.json`, renders the report's
+    stat tiles and 8 charts, and runs the report's interactive layer: genre
+    spotlight, prediction quizzes, movie-ticket viewer, decade reel playback,
+    and the scene navigator
+  - `js/motion.js` — shared scroll-reveal and count-up animation helpers
+    (both pages), respecting the viewer's reduced-motion setting
   - `js/dashboard.js` — loads `data/movies.json` + `data/ratings.csv` and
     does all filtering/aggregation/charting in the browser
   - `data/movies.json` — one row per movie: genre, decade, budget, revenue,
