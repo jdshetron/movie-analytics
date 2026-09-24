@@ -104,6 +104,18 @@
         <div class="chart-title" id="title-top-movies">Top 10 movies, by number of ratings</div>
         <canvas id="chart-top-movies"></canvas>
       </div>
+      <div class="chart-card wide">
+        <div class="card-head">
+          <div class="chart-title" id="title-top-rated">Highest-rated movies</div>
+          <div class="seg-toggle" role="group" aria-label="Rating source">
+            <button type="button" data-source="movielens" class="active" aria-pressed="true">MovieLens users</button>
+            <button type="button" data-source="tmdb" aria-pressed="false">TMDB voters</button>
+          </div>
+        </div>
+        <p class="chart-note" id="note-top-rated"></p>
+        <p class="chart-empty" id="empty-top-rated" hidden>No movies in this view have enough ratings to rank.</p>
+        <canvas id="chart-top-rated"></canvas>
+      </div>
     </section>
 
     <section class="table-card" id="table-card" style="display:none">

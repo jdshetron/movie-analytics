@@ -37,6 +37,13 @@
     rating_year: 'Rating year',
   };
 
+  // Weighted ("Bayesian") rating, same idea as IMDb's Top 250: a movie's average
+  // is pulled toward the view's overall average by WEIGHT_PRIOR phantom ratings,
+  // so a film with three 5-star ratings can't outrank one with thousands.
+  const WEIGHT_PRIOR = 25;
+  const TMDB_MIN_VOTES = 500;
+  let topRatedSource = 'movielens';
+
   function compactNumber(n) {
     return new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(n);
   }
@@ -147,8 +154,24 @@
       document.getElementById('f-language').value = '';
       document.getElementById('measure-select').value = 'count';
       document.getElementById('breakdown-select').value = 'primary_genre';
+      setTopRatedSource('movielens');
       render();
     });
+    for (const btn of document.querySelectorAll('.seg-toggle button')) {
+      btn.addEventListener('click', () => {
+        setTopRatedSource(btn.dataset.source);
+        render();
+      });
+    }
+  }
+
+  function setTopRatedSource(source) {
+    topRatedSource = source;
+    for (const btn of document.querySelectorAll('.seg-toggle button')) {
+      const active = btn.dataset.source === source;
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-pressed', String(active));
+    }
   }
 
   function debounce(fn, ms) {
@@ -241,29 +264,70 @@
     return aggregateByBucket(filteredRatings, 'rating_year', measureKey).sort((a, b) => a.bucket - b.bucket);
   }
 
-  function perMovieStats(filteredRatings, measureKey) {
-    const measure = MEASURES[measureKey];
+  function ratingsByMovie(filteredRatings) {
     const byMovie = new Map();
+    let total = 0;
     for (const r of filteredRatings) {
       if (!byMovie.has(r.movieId)) byMovie.set(r.movieId, { count: 0, sum: 0 });
       const s = byMovie.get(r.movieId);
       s.count++;
       s.sum += r.rating;
+      total += r.rating;
     }
+    const overallAvg = filteredRatings.length ? total / filteredRatings.length : 0;
+    for (const s of byMovie.values()) {
+      s.avg = s.sum / s.count;
+      s.weighted = (s.count * s.avg + WEIGHT_PRIOR * overallAvg) / (s.count + WEIGHT_PRIOR);
+    }
+    return { byMovie, overallAvg };
+  }
+
+  function perMovieStats(filteredRatings, measureKey) {
+    const measure = MEASURES[measureKey];
+    const { byMovie } = ratingsByMovie(filteredRatings);
     const out = [];
     for (const [movieId, s] of byMovie) {
       const m = movieMap.get(movieId);
       if (!m) continue;
       let value;
+      let rank;
       if (measure.kind === 'rating') {
-        value = measureKey === 'count' ? s.count : s.sum / s.count;
+        value = measureKey === 'count' ? s.count : s.avg;
+        // Rank averages by weighted score so one lone 5-star rating can't top the list.
+        rank = measureKey === 'count' ? s.count : s.weighted;
       } else {
         if (!m[measure.requires]) continue;
         value = m[measure.field];
+        rank = value;
       }
-      out.push({ title: m.title, value, ratingCount: s.count });
+      out.push({ title: m.title, value, rank, ratingCount: s.count });
     }
-    return out.sort((a, b) => b.value - a.value);
+    return out.sort((a, b) => b.rank - a.rank);
+  }
+
+  function topRatedMovies(filteredRatings, distinctMovies) {
+    if (topRatedSource === 'tmdb') {
+      const rows = [];
+      for (const id of distinctMovies) {
+        const m = movieMap.get(id);
+        if (!m || !(m.vote_count >= TMDB_MIN_VOTES) || m.vote_average == null) continue;
+        rows.push({ title: m.title, year: m.release_year, value: m.vote_average, detail: `${m.vote_count.toLocaleString()} TMDB votes` });
+      }
+      return { rows: rows.sort((a, b) => b.value - a.value).slice(0, 10) };
+    }
+    const { byMovie, overallAvg } = ratingsByMovie(filteredRatings);
+    const rows = [];
+    for (const [movieId, s] of byMovie) {
+      const m = movieMap.get(movieId);
+      if (!m) continue;
+      rows.push({
+        title: m.title,
+        year: m.release_year,
+        value: s.weighted,
+        detail: `raw average ${s.avg.toFixed(2)} from ${s.count.toLocaleString()} rating${s.count === 1 ? '' : 's'}`,
+      });
+    }
+    return { rows: rows.sort((a, b) => b.value - a.value).slice(0, 10), overallAvg };
   }
 
   function render() {
@@ -305,6 +369,8 @@
     const topMovies = perMovieStats(filtered, measureKey).slice(0, 10);
     renderTopMovies(topMovies, measure);
 
+    renderTopRated(topRatedMovies(filtered, distinctMovies));
+
     document.getElementById('title-table').textContent = `${measure.label} by ${breakdownLabel.toLowerCase()} — numbers behind the current view`;
     renderTable(byBucket, measure, breakdownLabel);
   }
@@ -343,6 +409,16 @@
     }
   }
 
+  // Long movie titles would otherwise be clipped at the chart's left edge;
+  // the tooltip title still shows the full label.
+  function truncatingTick(maxChars) {
+    return function (value) {
+      const label = String(this.getLabelForValue(value));
+      return label.length > maxChars ? label.slice(0, maxChars - 1) + '…' : label;
+    };
+  }
+  const truncatedCategoryTick = truncatingTick(30);
+
   function baseBarOptions(measure, horizontal) {
     return {
       responsive: true,
@@ -370,7 +446,7 @@
         y: {
           grid: { color: horizontal ? 'transparent' : colors.grid },
           border: { color: colors.axis },
-          ticks: !horizontal ? { callback: (v, i, ticks) => measure.format(ticks[i].value) } : {},
+          ticks: !horizontal ? { callback: (v, i, ticks) => measure.format(ticks[i].value) } : { callback: truncatedCategoryTick },
         },
       },
     };
@@ -481,6 +557,11 @@
   }
 
   function renderTopMovies(topMovies, measure) {
+    const options = baseBarOptions(measure, true);
+    options.plugins.tooltip.callbacks.afterLabel = (ctx) => {
+      const n = topMovies[ctx.dataIndex].ratingCount;
+      return `${n.toLocaleString()} rating${n === 1 ? '' : 's'} in view`;
+    };
     upsertChart('topMovies', {
       canvasId: 'chart-top-movies',
       type: 'bar',
@@ -488,7 +569,44 @@
         labels: topMovies.map((d) => d.title),
         datasets: [{ data: topMovies.map((d) => d.value), backgroundColor: colors.series6, borderRadius: 4, barThickness: 16, maxBarThickness: 20 }],
       },
-      options: baseBarOptions(measure, true),
+      options,
+    });
+  }
+
+  function renderTopRated({ rows, overallAvg }) {
+    const isTmdb = topRatedSource === 'tmdb';
+    const scale = isTmdb ? 10 : 5;
+    const format = (v) => `${v.toFixed(2)} / ${scale}`;
+
+    document.getElementById('title-top-rated').textContent = isTmdb
+      ? 'Highest-rated movies, by TMDB voter score'
+      : 'Highest-rated movies, by MovieLens users (weighted)';
+    document.getElementById('note-top-rated').textContent = isTmdb
+      ? `TMDB's 0–10 average from its own voters, limited to movies with at least ${TMDB_MIN_VOTES} TMDB votes. ` +
+        'Like MovieLens, this is audience voting — neither dataset includes professional critic scores.'
+      : `Each movie's average is blended with the average across this view (${overallAvg ? overallAvg.toFixed(2) : '—'}) ` +
+        `as if it had ${WEIGHT_PRIOR} extra ratings at that average, so movies with only a handful of ratings ` +
+        "can't outrank ones with thousands. Hover a bar for the raw average and rating count.";
+
+    const empty = rows.length === 0;
+    document.getElementById('empty-top-rated').hidden = !empty;
+    document.getElementById('chart-top-rated').style.display = empty ? 'none' : '';
+
+    const options = baseBarOptions({ format }, true);
+    options.scales.x.min = 0;
+    options.scales.x.max = scale;
+    options.scales.x.ticks = { stepSize: isTmdb ? 2 : 1 };
+    options.scales.y.ticks = { callback: truncatingTick(48) };
+    options.plugins.tooltip.callbacks.afterLabel = (ctx) => rows[ctx.dataIndex].detail;
+
+    upsertChart('topRated', {
+      canvasId: 'chart-top-rated',
+      type: 'bar',
+      data: {
+        labels: rows.map((d) => (d.year ? `${d.title} (${d.year})` : d.title)),
+        datasets: [{ data: rows.map((d) => d.value), backgroundColor: colors.series7, borderRadius: 4, barThickness: 18, maxBarThickness: 22 }],
+      },
+      options,
     });
   }
 
