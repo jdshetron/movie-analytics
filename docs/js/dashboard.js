@@ -604,7 +604,7 @@
       type: 'bar',
       data: {
         labels: rows.map((d) => (d.year ? `${d.title} (${d.year})` : d.title)),
-        datasets: [{ data: rows.map((d) => d.value), backgroundColor: colors.series7, borderRadius: 4, barThickness: 18, maxBarThickness: 22 }],
+        datasets: [{ data: rows.map((d) => d.value), backgroundColor: colors.series8, borderRadius: 4, barThickness: 18, maxBarThickness: 22 }],
       },
       options,
     });
