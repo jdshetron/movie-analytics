@@ -53,6 +53,13 @@ fixed-seed 400,000-row random sample of their ratings).
     and the scene navigator
   - `js/motion.js` — shared scroll-reveal and count-up animation helpers
     (both pages), respecting the viewer's reduced-motion setting
+  - `js/sfx.js` — sound effects synthesized with the Web Audio API (no audio
+    files); off by default behind the nav speaker toggle (both pages)
+  - `js/fx.js` — cursor glow, "house lights down" spotlight mode, the hero's
+    stage spotlight, and 3D tilt on ticket cards (both pages)
+  - `js/scene3d.js` — three.js scenes built from code (no model files): the
+    hero's film projector, the credits trophy, and the popcorn burst for
+    correct quiz answers (report page)
   - `js/dashboard.js` — loads `data/movies.json` + `data/ratings.csv` and
     does all filtering/aggregation/charting in the browser
   - `data/movies.json` — one row per movie: genre, decade, budget, revenue,

@@ -555,8 +555,20 @@
         result.focus({ preventScroll: true });
         updateScore();
 
+        // Sound (sfx.js) and the 3D popcorn/trophy (scene3d.js) react to this.
+        const rect = card.getBoundingClientRect();
+        document.dispatchEvent(new CustomEvent('quiz:answered', {
+          detail: {
+            correct: pick !== null && pick === quiz.answer,
+            skipped: pick === null,
+            perfect: score.finished === score.total && score.correct === score.total,
+            x: rect.left + rect.width / 2,
+            y: rect.top + rect.height * 0.4,
+          },
+        }));
+
         if (card.dataset.quiz === 'topMovie') {
-          window.__selectTicket(0);
+          window.__selectTicket(0, true);
         } else {
           // Re-applying the spotlight refreshes the notes this quiz was hiding;
           // with no spotlight on, light up the answer instead.
@@ -573,8 +585,9 @@
     const ticket = document.getElementById('movie-ticket');
     let index = 0;
 
-    function select(i) {
+    function select(i, silent) {
       index = (i + topMovies.length) % topMovies.length;
+      if (!silent) document.dispatchEvent(new CustomEvent('ticket:print'));
       const m = topMovies[index];
       document.getElementById('ticket-rank').textContent = `#${index + 1} of ${topMovies.length}`;
       document.getElementById('ticket-title').textContent = cleanTitle(m.title);
@@ -598,7 +611,7 @@
     topChart.update('none');
     document.getElementById('ticket-prev').addEventListener('click', () => select(index - 1));
     document.getElementById('ticket-next').addEventListener('click', () => select(index + 1));
-    select(0);
+    select(0, true);
     window.__selectTicket = select;
   }
 
@@ -635,6 +648,7 @@
       if (REDUCED_MOTION) return finish();
       button.disabled = true;
       label.textContent = 'Rolling…';
+      document.dispatchEvent(new CustomEvent('reel:start', { detail: { duration: 0.35 + values.length * 0.52 } }));
       // Pin the axis to the final peak so it doesn't rescale as each decade
       // lands — otherwise early decades shrink and the growth story disappears.
       decadeChart.options.scales.y.max = decadeChart.scales.y.max;

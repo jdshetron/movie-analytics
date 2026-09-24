@@ -255,6 +255,7 @@ a { color: var(--accent-ink); }
 
 .site-nav .links {
   display: flex;
+  align-items: center;
   gap: 4px;
 }
 
@@ -334,7 +335,7 @@ a { color: var(--accent-ink); }
   border-radius: var(--radius-sm);
   padding: 20px 24px 18px;
   transition: transform 0.25s var(--ease);
-  animation: popIn 0.5s var(--ease) both;
+  animation: popIn 0.5s var(--ease) backwards;
   -webkit-mask:
     radial-gradient(circle 10px at 0 50%, #0000 97%, #000) left / 51% 100% no-repeat,
     radial-gradient(circle 10px at 100% 50%, #0000 97%, #000) right / 51% 100% no-repeat;
@@ -422,7 +423,7 @@ a { color: var(--accent-ink); }
   margin-top: 18px;
   position: relative;
   transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
-  animation: popIn 0.5s var(--ease) both;
+  animation: popIn 0.5s var(--ease) backwards;
 }
 
 .chart-card:hover {
@@ -990,7 +991,7 @@ table.data-table thead th:hover { color: var(--accent-ink); }
   color: var(--text-primary);
   font-size: 14px;
   max-width: none;
-  animation: popIn 0.35s var(--ease) both;
+  animation: popIn 0.35s var(--ease) backwards;
 }
 
 .finding p.spotlight-note { color: var(--text-primary); }
@@ -1019,7 +1020,7 @@ table.data-table thead th:hover { color: var(--accent-ink); }
   color: var(--screen-text);
   font-size: 13.5px;
   box-shadow: 0 14px 30px -12px var(--shadow-deep);
-  animation: popIn 0.35s var(--ease) both;
+  animation: popIn 0.35s var(--ease) backwards;
 }
 
 .spotlight-pill strong { color: var(--bulb); }
@@ -1206,7 +1207,7 @@ table.data-table thead th:hover { color: var(--accent-ink); }
   padding: 10px 14px;
   border-radius: 12px;
   font-size: 14px;
-  animation: popIn 0.4s var(--ease) both;
+  animation: popIn 0.4s var(--ease) backwards;
 }
 
 .quiz-result strong { font-family: "Space Grotesk", sans-serif; }
@@ -1439,6 +1440,199 @@ table.data-table thead th:hover { color: var(--accent-ink); }
   .screen-inner { padding: 30px 22px 26px; }
   .credits-list div { grid-template-columns: 1fr; gap: 0; }
   .credits-list dt, .credits-list dd { text-align: center; }
+}
+
+/* ================= Sound, spotlight, and 3D ================= */
+
+.tool-btn {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease), transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+.tool-btn svg { width: 18px; height: 18px; }
+.tool-btn:hover { background: var(--grid); color: var(--text-primary); transform: translateY(-1px); }
+.tool-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.tool-btn[aria-pressed="true"] {
+  background: var(--gradient-accent);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 14px -4px var(--glow);
+}
+
+#toggle-sound .icon-on { display: none; }
+#toggle-sound[aria-pressed="true"] .icon-on { display: block; }
+#toggle-sound[aria-pressed="true"] .icon-off { display: none; }
+
+.nav-sep {
+  width: 1px;
+  height: 20px;
+  margin: 0 6px;
+  background: var(--border);
+}
+
+/* Warm light that follows the cursor. */
+.cursor-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 17;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+  background: radial-gradient(circle 300px at var(--mx, 50%) var(--my, 50%), rgba(255, 176, 110, 0.13), transparent 70%);
+}
+
+.cursor-glow.on { opacity: 1; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .cursor-glow {
+    mix-blend-mode: screen;
+    background: radial-gradient(circle 300px at var(--mx, 50%) var(--my, 50%), rgba(255, 196, 150, 0.09), transparent 70%);
+  }
+}
+
+:root[data-theme="dark"] .cursor-glow {
+  mix-blend-mode: screen;
+  background: radial-gradient(circle 300px at var(--mx, 50%) var(--my, 50%), rgba(255, 196, 150, 0.09), transparent 70%);
+}
+
+/* House lights down: everything goes dark except a spotlight at the cursor.
+   Sits under the nav (z 20) so the toggle stays reachable. */
+.house-dark {
+  position: fixed;
+  inset: 0;
+  z-index: 18;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s var(--ease), visibility 0.6s;
+  background: radial-gradient(circle 240px at var(--mx, 50%) var(--my, 50%), rgba(6, 1, 2, 0) 0%, rgba(6, 1, 2, 0) 42%, rgba(6, 1, 2, 0.9) 100%);
+}
+
+.lights-down .house-dark { opacity: 1; visibility: visible; }
+
+:root.lights-down .cursor-glow {
+  opacity: 1;
+  z-index: 19;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle 240px at var(--mx, 50%) var(--my, 50%), rgba(255, 228, 175, 0.16), transparent 62%);
+}
+
+/* Glare that tracks the pointer on tilted ticket cards (tilt set in fx.js). */
+.stat-tile,
+.movie-ticket { position: relative; }
+
+.stat-tile::after,
+.movie-ticket::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 0%), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0) 55%);
+  mix-blend-mode: soft-light;
+  opacity: 0;
+  transition: opacity 0.3s var(--ease);
+}
+
+.tilting::after { opacity: 1; }
+
+/* ---- Hero: copy beside the 3D projector ---- */
+
+.screen-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 12px;
+  align-items: center;
+}
+
+.screen h1 { font-size: 46px; }
+
+.screen-inner > .screen-spot {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+  mix-blend-mode: screen;
+  background: radial-gradient(circle 260px at var(--sx, 70%) var(--sy, 30%), rgba(255, 232, 190, 0.22), rgba(255, 232, 190, 0.05) 45%, transparent 70%);
+}
+
+.screen-inner.spot-on > .screen-spot { opacity: 1; }
+
+.hero-stage {
+  position: relative;
+  height: 360px;
+  margin-right: -24px;
+}
+
+.hero-stage canvas,
+.trophy-stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Fade the right edge so the projector beam dissolves instead of being clipped. */
+.hero-stage canvas {
+  cursor: pointer;
+  -webkit-mask-image: linear-gradient(90deg, #000 78%, transparent 100%);
+  mask-image: linear-gradient(90deg, #000 78%, transparent 100%);
+}
+
+.stage-hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4px;
+  text-align: center;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--screen-muted);
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.trophy-stage {
+  position: relative;
+  width: 260px;
+  height: 290px;
+  margin: 0 auto 4px;
+}
+
+.trophy-stage canvas { cursor: grab; }
+.trophy-stage canvas:active { cursor: grabbing; }
+.trophy-stage .stage-hint { color: var(--text-muted); bottom: 0; }
+
+.hero-stage.no-webgl,
+.trophy-stage.no-webgl { display: none; }
+
+.popcorn-layer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 40;
+  pointer-events: none;
+}
+
+@media (max-width: 860px) {
+  .screen-inner { grid-template-columns: 1fr; }
+  .hero-stage { height: 280px; margin: 4px 0 0; }
+}
+
+@media (max-width: 560px) {
+  .hero-stage { display: none; }
 }
 
 @media (max-width: 640px) {

@@ -6,6 +6,14 @@
 <title>Movie Analytics — Report</title>
 <meta name="description" content="Ratings and box-office financial findings from MovieLens and TMDB movie data.">
 <link rel="stylesheet" href="css/style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
 </head>
 <body class="report-page">
 
@@ -23,6 +31,14 @@
     <span class="sub">ratings &amp; box office</span>
   </a>
   <div class="links">
+    <button type="button" class="tool-btn" id="toggle-sound" aria-pressed="false" aria-label="Sound off — turn on" title="Sound off">
+      <svg class="icon-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <svg class="icon-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z" fill="currentColor"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <button type="button" class="tool-btn" id="toggle-lights" aria-pressed="false" aria-label="Dim the house lights" title="Dim the house lights">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 2h5v4.5L12 9 9.5 6.5z" fill="currentColor"/><path d="M8 10.5h8l4.5 11h-17z" fill="currentColor" opacity="0.4"/></svg>
+    </button>
+    <span class="nav-sep" aria-hidden="true"></span>
     <a href="index.html" class="active">Report</a>
     <a href="dashboard.html">Dashboard</a>
   </div>
@@ -35,6 +51,7 @@
     <div class="screen">
       <div class="marquee-lights" aria-hidden="true"></div>
       <div class="screen-inner">
+        <div class="screen-copy">
         <div class="now-showing">Now showing</div>
         <h1>What movie ratings and box office data tell us</h1>
         <div class="byline">By John Shetron &middot; Financial Data Analytics &middot; MovieLens + TMDB data</div>
@@ -54,6 +71,11 @@
           </a>
           <a class="btn-ghost" href="dashboard.html">Explore the dashboard</a>
           <span class="rating-badge" title="A joke rating, not a real one">Rated <strong>D</strong> for Data &middot; 8 scenes</span>
+        </div>
+        </div>
+        <div class="hero-stage" aria-hidden="true">
+          <canvas id="projector-canvas"></canvas>
+          <div class="stage-hint">Click the projector to roll film</div>
         </div>
       </div>
     </div>
@@ -253,13 +275,17 @@
   <!-- ===================== CREDITS ===================== -->
   <section class="closing reveal" id="credits" data-scene="Credits">
     <div class="credits-roll">
+      <div class="trophy-stage" aria-hidden="true">
+        <canvas id="trophy-canvas"></canvas>
+        <div class="stage-hint">Drag to spin &middot; click to take a bow</div>
+      </div>
       <div class="credits-kicker">Roll credits</div>
       <h2>About this data</h2>
       <dl class="credits-list">
         <div><dt>Directed &amp; analyzed by</dt><dd>John Shetron</dd></div>
         <div><dt>Ratings</dt><dd>GroupLens Research &middot; MovieLens 32M</dd></div>
         <div><dt>Box office figures</dt><dd>The Movie Database (TMDB)</dd></div>
-        <div><dt>Built with</dt><dd>Python &middot; pandas &middot; Chart.js</dd></div>
+        <div><dt>Built with</dt><dd>Python &middot; pandas &middot; Chart.js &middot; three.js</dd></div>
         <div class="credits-score" id="credits-score" hidden><dt>Your predictions</dt><dd id="credits-score-value"></dd></div>
       </dl>
     </div>
@@ -362,6 +388,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script src="js/motion.js"></script>
+<script src="js/sfx.js"></script>
+<script src="js/fx.js"></script>
 <script src="js/report.js"></script>
+<script type="module" src="js/scene3d.js"></script>
 </body>
 </html>
